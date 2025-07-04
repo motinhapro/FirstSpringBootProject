@@ -6,11 +6,16 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_order_item")
@@ -37,31 +42,19 @@ public class OrderItem implements Serializable {
         return id.getOrder();
     }
 
-    public void setOrder(Order order) {
-        id.setOrder(order);
+    public Double getSubtotal() {
+        return quantity * price;
     }
 
-    public Product getProduct() {
-        return id.getProduct();
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItem orderItem = (OrderItem) o;
+        return Objects.equals(id, orderItem.id);
     }
 
-    public void setProduct(Product product) {
-        id.setProduct(product);
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
